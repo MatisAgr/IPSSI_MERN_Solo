@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 import Input from '../Inputs/Input';
-
-// import EmailInput from '../Inputs/EmailInput';
-// import PasswdInput from '../Inputs/PasswdInput';
 
 import { useNavigate } from "react-router-dom";
 
@@ -12,18 +10,58 @@ export default function RegisterForm() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [alert, setAlert] = useState(null);
     const navigate = useNavigate();
 
+    const validateEmail = (email) => {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(String(email).toLowerCase());
+    };
+
+    const validatePassword = (password) => {
+        return password.length >= 6;
+    };
+
     const handleRegister = async () => {
+        if (!validateEmail(email)) {
+            setAlert({ type: 'error', message: 'Please enter a valid email address' });
+            return;
+        }
+
+        if (!validatePassword(password)) {
+            setAlert({ type: 'error', message: 'Password must be at least 6 characters long' });
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setAlert({ type: 'error', message: 'Passwords do not match' });
+            return;
+        }
+
         setIsLoading(true);
-        // fake response time
-        await new Promise((r) => setTimeout(r, 1000));
-        if (email === "test@gmail.com" && password === "1234") {
-            alert("Login successful");
-            navigate("/jokes");
-        } else {
-            alert("Email or password is incorrect");
+        try {
+            const response = await axios.post('http://localhost:8080/register', {
+                username,
+                email,
+                password
+            });
+            console.log("Server response:", response);
+            if (response.status === 201) {
+                setAlert({ type: 'success', message: 'Registration successful' });
+                navigate("/jokes");
+            } else {
+                console.log("Unexpected response status:", response.status);
+                setAlert({ type: 'error', message: 'Registration failed' });
+            }
+        } catch (error) {
+            console.log("Error during registration:", error);
+            if (error.response && error.response.data && error.response.data.error) {
+                setAlert({ type: 'error', message: error.response.data.error });
+            } else {
+                setAlert({ type: 'error', message: 'An error occurred during registration' });
+            }
         }
         setIsLoading(false);
     };
@@ -32,18 +70,18 @@ export default function RegisterForm() {
         <>
             <div className='flex flex-col items-center justify-center rounded-3xl p-5 bg-gray-900 shadow-md w-1/3'>
                 <h1 className='text-4xl font-bold text-white mb-5'>Register</h1>
-                {/* <EmailInput email={email} onChange={handleEmailChange} />
-                <PasswdInput passwd={password} onChange={handlePasswordChange} /> */}
+                
                 <Input label='Username' type='text' value={username} onChange={(e) => setUsername(e.target.value)} placeholder='Enter your username' />
                 <Input label='Email' type='email' value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Enter your email' />
                 <Input label='Password' type='password' value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Enter your password' />
+                <Input label='Confirm Password' type='password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder='Confirm your password' />
 
                 <button
-                    className='bg-blue-500 text-white p-2 rounded-md w-full mt-5 text-center justify-center'
+                    className={`bg-blue-500 text-white p-2 rounded-md w-full mt-5 text-center justify-center ${!username || !email || !password || !confirmPassword ? 'opacity-50 cursor-not-allowed' : ''}`}
                     onClick={handleRegister}
-                    disabled={isLoading}
+                    disabled={isLoading || !username || !email || !password || !confirmPassword}
                 >
-                    {isLoading ?
+                    {isLoading ? 
                         <div role="status" className="flex items-center justify-center">
                             <svg aria-hidden="true" className="w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
@@ -51,8 +89,13 @@ export default function RegisterForm() {
                             </svg>
                             <span className="sr-only">Loading...</span>
                         </div>
-                        : 'Login'}
+                        : 'Register'}
                 </button>
+                {alert && (
+                    <div className={`p-2 mt-4 w-full text-sm ${alert.type === 'error' ? 'text-red-700 bg-red-100' : 'text-green-700 bg-green-100'} rounded-lg`} role="alert">
+                        {alert.message}
+                    </div>
+                )}
             </div>
         </>
     );

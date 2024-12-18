@@ -1,5 +1,7 @@
 require('dotenv').config();
+
 const express = require("express");
+const cors = require("cors");
 const app = express();
 app.use(express.json());
 
@@ -21,6 +23,9 @@ mongoose
     console.log("Cannot connect to the database!", err);
     process.exit();
   });
+
+
+app.use(cors());
 
 const routes = require("./routes");
 app.use("/", routes);
