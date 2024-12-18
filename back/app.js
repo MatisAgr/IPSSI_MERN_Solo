@@ -1,21 +1,26 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
 app.use(express.json());
 
-const PORT = 8080;
+const PORT = process.env.SERVER_PORT || 8080;
 
 const mongoose = require("mongoose");
+const dbDialect = process.env.DB_DIALECT;
+const dbHost = process.env.DB_HOST;
+const dbPort = process.env.DB_PORT;
+const dbName = process.env.DB_NAME;
+const dbUrl = `${dbDialect}://${dbHost}:${dbPort}/${dbName}`;
+
 mongoose
-  .connect("mongodb://127.0.0.1:27017/cuisineapinode", {})
+  .connect(dbUrl, {})
   .then(() => {
-    console.log("Connected to the mongoDB database!");
+    console.log(`Connected to the ${dbDialect} database!`);
   })
   .catch((err) => {
     console.log("Cannot connect to the database!", err);
     process.exit();
   });
-
-
 
 const routes = require("./routes");
 app.use("/", routes);
