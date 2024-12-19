@@ -30,8 +30,14 @@ export default function DetailAnnoncePage() {
     return <div>Loading...</div>;
   }
 
-  if (error) {
-    return <div>{error}</div>;
+  if (error || !announce) {
+    return (
+      <div className="container mx-auto p-4">
+        <div className="bg-white shadow-md rounded p-4">
+          <h1 className="text-3xl font-bold text-center text-red-500">L'annonce que vous cherchez n'existe pas</h1>
+        </div>
+      </div>
+    );
   }
 
   return (
