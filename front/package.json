@@ -5,6 +5,8 @@
   "dependencies": {
     "axios": "^1.7.9",
     "cra-template": "1.2.0",
+    "flowbite": "^2.5.2",
+    "flowbite-react": "^0.10.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.0.2",
