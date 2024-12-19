@@ -71,13 +71,18 @@ Avant de commencer, assurez-vous d'avoir les éléments suivants installés sur 
 - Gestion du profil utilisateur
 - Sécurité lié à la création d'annonce 
 - Regex d'inscription
+- Filtrage par Catégorie (client)
+- Recherche par Nom (client)
+- Détail de l'annonce en cliquant dessus *"plus de ligne pour la description"*
+
+#### Tous les objectifs obligatoires, bonus et + ont bien été réussi
 
 ## Structure du projet
 
 - `back/` : Contient le code backend (Node, Express, MongoDB)
 - `front/` : Contient le code frontend (React, Tailwind CSS)
 
-### Réalisé en 3H17min
+### Réalisé en 3H27min
 
 Futures améliorations :
 - Meilleure structure de composant
