@@ -10,6 +10,7 @@ import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import AnnouncePage from './pages/AnnouncePage/AnnouncePage';
 import FooterComponent from './components/Footer/Footer';
+import CreateAnnouncePage from './pages/CreateAnnoucePage/CreateAnnouncePage';
 
 
 
@@ -28,6 +29,7 @@ function App() {
               <Route path='/profile' element={<ProfilePage />} />
 
               <Route path='/' element={<AnnouncePage />} />
+              <Route path='/createAnnonce' element={<CreateAnnouncePage />} />
 
               <Route path='*' element={<NotFoundPage />} />
             </Routes>
