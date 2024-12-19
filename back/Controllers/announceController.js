@@ -49,15 +49,25 @@ const getUserAnnounces = async (req, res) => {
 
 const updateAnnounce = async (req, res) => {
   try {
-    const announce = await Announce.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const userId = req.user.id;
+    const announce = await Announce.findById(req.params.id);
+
     if (!announce) {
       return res.status(404).json({ error: 'Announce not found' });
     }
-    res.status(200).json({ message: 'Announce updated successfully', announce });
+
+    // Vérifier que l'utilisateur est bien celui qui a créé l'annonce
+    if (announce.user.toString() !== userId) {
+      return res.status(403).json({ error: 'Unauthorized to update this announce' });
+    }
+
+    const updatedAnnounce = await Announce.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    res.status(200).json({ message: 'Announce updated successfully', announce: updatedAnnounce });
   } catch (error) {
     res.status(400).json({ error: 'Error updating announce', details: error.message });
   }
 };
+
 
 const deleteAnnounce = async (req, res) => {
   try {

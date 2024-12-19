@@ -1,4 +1,6 @@
 const User = require("../Models/userModel");
+const Announce = require('../Models/announceModel');
+
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
@@ -121,13 +123,19 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    console.log("Delete request received:", req.params.id);
-    const user = await User.findByIdAndDelete(req.params.id);
+    const userId = req.user.id;
+    console.log("Delete request received:", userId);
+
+    // Supprimer les annonces associées à l'utilisateur
+    await Announce.deleteMany({ user: userId });
+
+    // Supprimer l'utilisateur
+    const user = await User.findByIdAndDelete(userId);
     if (!user) {
       console.log("User not found");
       return res.status(404).send({ error: "User not found" });
     }
-    console.log("User deleted:", user);
+    console.log("User and associated announces deleted:", user);
     res.status(200).send(user);
   } catch (error) {
     console.log("Error deleting user:", error.message);
