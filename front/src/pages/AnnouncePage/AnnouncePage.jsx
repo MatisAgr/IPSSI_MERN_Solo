@@ -55,6 +55,7 @@ export default function AnnouncePage() {
           {announces.map((announce) => (
             <CardAnnouce
               key={announce._id}
+              id={announce._id}
               title={announce.title}
               description={announce.description}
               price={announce.price}

@@ -234,6 +234,7 @@ export default function ProfilePage() {
               Edit
             </button>
             <CardAnnouce
+              id={announce._id}
               title={announce.title}
               description={announce.description}
               price={announce.price}
