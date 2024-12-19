@@ -90,3 +90,4 @@ Futures améliorations :
 - Plus de fonctionalité
 - Ajustement du style
 - Prendre en charge les images et non uniquement les liens
+- Mettre le token en cookie au lieu de localstorage
