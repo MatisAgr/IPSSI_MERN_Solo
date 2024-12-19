@@ -15,7 +15,12 @@ export default function Navbar() {
     <nav className="bg-gray-800 p-4">
       <div className="container mx-auto flex justify-between items-center">
         <div className="text-white text-lg font-bold">
-          <NavLink to="/" className="text-white">
+          <NavLink to="/" className="flex items-center text-white">
+            <img
+              src="https://www.geek-chretien.fr/wp-content/uploads/2018/01/logo-leboncoin.png"
+              alt="Logo"
+              className="h-8 w-8 mr-2"
+            />
             Le Coin Bon
           </NavLink>
         </div>

@@ -9,6 +9,7 @@ import LoginPage from './pages/LoginPage/LoginPage';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import AnnouncePage from './pages/AnnouncePage/AnnouncePage';
+import FooterComponent from './components/Footer/Footer';
 
 
 
@@ -31,6 +32,8 @@ function App() {
               <Route path='*' element={<NotFoundPage />} />
             </Routes>
           </div>
+
+          <FooterComponent />
     </div>
   );
 }
