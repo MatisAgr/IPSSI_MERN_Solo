@@ -90,14 +90,27 @@ const loginUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    console.log("Update request received:", req.params.id, req.body);
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+    const userId = req.user.id;
+    console.log("Update request received:", userId, req.body);
+
+    // Filtrer les champs vides
+    const updates = {};
+    for (const key in req.body) {
+      if (req.body[key] !== '') {
+        updates[key] = req.body[key];
+      }
+    }
+
+    const user = await User.findByIdAndUpdate(userId, updates, {
       new: true,
+      runValidators: true,
     });
+
     if (!user) {
       console.log("User not found");
       return res.status(404).send({ error: "User not found" });
     }
+
     console.log("User updated:", user);
     res.status(200).send(user);
   } catch (error) {
@@ -122,4 +135,19 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, updateUser, deleteUser };
+const getUserProfile = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const user = await User.findById(userId).select('-password'); 
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    console.log("Error fetching user profile:", error.message);
+    res.status(400).send({ error: error.message });
+  }
+};
+
+
+module.exports = { registerUser, loginUser, updateUser, deleteUser, getUserProfile };

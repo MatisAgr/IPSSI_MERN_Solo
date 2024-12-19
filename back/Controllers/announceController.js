@@ -37,6 +37,16 @@ const getAnnounceById = async (req, res) => {
   }
 };
 
+const getUserAnnounces = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const announces = await Announce.find({ user: userId });
+    res.status(200).json(announces);
+  } catch (error) {
+    res.status(400).json({ error: 'Error fetching user announces', details: error.message });
+  }
+};
+
 const updateAnnounce = async (req, res) => {
   try {
     const announce = await Announce.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
@@ -67,4 +77,5 @@ module.exports = {
   getAnnounceById,
   updateAnnounce,
   deleteAnnounce,
+  getUserAnnounces
 };

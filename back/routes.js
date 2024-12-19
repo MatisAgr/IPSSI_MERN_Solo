@@ -4,6 +4,7 @@ const {
   loginUser,
   updateUser,
   deleteUser,
+  getUserProfile,
 } = require("./Controllers/userController");
 
 
@@ -13,6 +14,7 @@ const {
   getAnnounceById,
   updateAnnounce,
   deleteAnnounce,
+  getUserAnnounces,
 } = require("./Controllers/announceController");
 
 const authMiddleware = require("./Middleware/authMiddleware");
@@ -22,11 +24,15 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.put("/update/:id", updateUser);
 router.delete("/delete/:id", deleteUser);
+router.get("/user/me", authMiddleware, getUserProfile);
+router.put("/user/update/me", authMiddleware, updateUser);
 
 router.post("/create", authMiddleware, createAnnounce);
 router.get("/announces", getAllAnnounces);
 router.get("/announce/:id", getAnnounceById);
 router.put("/announce/:id", authMiddleware, updateAnnounce);
 router.delete("/announce/:id", authMiddleware, deleteAnnounce);
+router.get("/announces/me", authMiddleware, getUserAnnounces);
+
 
 module.exports = router;
