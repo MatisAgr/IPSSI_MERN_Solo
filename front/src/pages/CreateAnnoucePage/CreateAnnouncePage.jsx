@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import CardAnnouce from '../../components/Card/CardAnnouce';
 
 export default function CreateAnnouncePage() {
+
+  const navigate = useNavigate();
+
+  
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -32,6 +37,7 @@ export default function CreateAnnouncePage() {
       });
       console.log(response.data);
       alert('Annonce créée avec succès');
+      navigate('/');
     } catch (error) {
       console.error('Erreur lors de la création de l\'annonce', error);
       alert('Erreur lors de la création de l\'annonce');

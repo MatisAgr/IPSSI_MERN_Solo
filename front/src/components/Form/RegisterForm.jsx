@@ -50,7 +50,7 @@ export default function RegisterForm() {
             console.log("Server response:", response);
             if (response.status === 201) {
                 setAlert({ type: 'success', message: 'Registration successful' });
-                navigate("/jokes");
+                navigate("/login");
             } else {
                 console.log("Unexpected response status:", response.status);
                 setAlert({ type: 'error', message: 'Registration failed' });

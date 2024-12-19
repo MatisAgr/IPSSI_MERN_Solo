@@ -1,38 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Carousel } from 'flowbite-react';
 import CardAnnouce from '../../components/Card/CardAnnouce';
 
 export default function AnnouncePage() {
+  const [announces, setAnnounces] = useState([]);
 
-  const announces = [
-    {
-      title: "Titre de l'annonce 1",
-      description: "Description de l'annonce 1",
-      price: 100,
-      category: "Catégorie 1",
-      location: "Lieu 1",
-      images: ["https://via.placeholder.com/150"],
-      createdAt: new Date().toLocaleDateString(),
-      user: "Utilisateur 1"
-    },
-    {
-      title: "Titre de l'annonce 2",
-      description: "Description de l'annonce 2",
-      price: 200,
-      category: "Catégorie 2",
-      location: "Lieu 2",
-      images: ["https://via.placeholder.com/150"],
-      createdAt: new Date().toLocaleDateString(),
-      user: "Utilisateur 2"
-    },
-    // Ajoutez d'autres annonces ici
-  ];
+  useEffect(() => {
+    const fetchAnnounces = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/announces');
+        setAnnounces(response.data);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des annonces', error);
+      }
+    };
 
-
+    fetchAnnounces();
+  }, []);
 
   return (
     <div className="bg-gray-100 min-h-screen">
-
       <main className="container mx-auto p-4">
         <h1 className="text-4xl font-bold text-center mb-8">Welcome to Le Coin Bon</h1>
 
@@ -64,13 +52,21 @@ export default function AnnouncePage() {
         {/* Emplacement pour mettre une grille d'article en card  */}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-          {announces.map((announce, index) => (
-            <CardAnnouce key={index} {...announce} />
+          {announces.map((announce) => (
+            <CardAnnouce
+              key={announce._id}
+              title={announce.title}
+              description={announce.description}
+              price={announce.price}
+              category={announce.category}
+              location={announce.location}
+              images={announce.images}
+              createdAt={new Date(announce.createdAt).toLocaleDateString()}
+              user={announce.user.username}
+            />
           ))}
         </div>
-
       </main>
-
     </div>
   );
 }

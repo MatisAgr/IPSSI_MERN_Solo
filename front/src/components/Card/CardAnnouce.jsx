@@ -4,7 +4,7 @@ export default function CardAnnouce({ title, description, price, category, locat
   return (
     <div className="max-w-sm rounded-3xl overflow-hidden shadow-lg bg-white">
       {images[0] && (
-        <img className="w-full" src={images[0]} alt="Image de l'annonce" />
+        <img className="w-full max-h-48 object-cover" src={images[0]} alt="Image de l'annonce" />
       )}
       <div className="px-6 py-4">
         <div className="font-bold text-xl mb-2">{title}</div>
