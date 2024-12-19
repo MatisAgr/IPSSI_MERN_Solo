@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function CardAnnouce({ id, title, description, price, category, location, images, createdAt, user }) {
   return (
-    <div className="max-w-sm rounded-3xl overflow-hidden shadow-lg bg-white">
+    <div className="w-full rounded-3xl overflow-hidden shadow-lg bg-white">
       {images[0] && (
         <img className="w-full max-h-48 object-cover" src={images[0]} alt="Image de l'annonce" />
       )}

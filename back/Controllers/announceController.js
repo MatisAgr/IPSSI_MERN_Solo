@@ -61,13 +61,20 @@ const updateAnnounce = async (req, res) => {
       return res.status(403).json({ error: 'Unauthorized to update this announce' });
     }
 
-    const updatedAnnounce = await Announce.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    // Filtrer les champs vides
+    const updateData = {};
+    for (const key in req.body) {
+      if (req.body[key] !== '') {
+        updateData[key] = req.body[key];
+      }
+    }
+
+    const updatedAnnounce = await Announce.findByIdAndUpdate(req.params.id, updateData, { new: true, runValidators: true });
     res.status(200).json({ message: 'Announce updated successfully', announce: updatedAnnounce });
   } catch (error) {
     res.status(400).json({ error: 'Error updating announce', details: error.message });
   }
 };
-
 
 const deleteAnnounce = async (req, res) => {
   try {

@@ -17,10 +17,12 @@ export default function ProfilePage() {
     confirmPassword: ''
   });
   const [announceData, setAnnounceData] = useState({
+    id: '',
     title: '',
     description: '',
     price: '',
     category: '',
+    images: '',
     location: ''
   });
 
@@ -102,10 +104,12 @@ export default function ProfilePage() {
   const handleEditAnnounce = async (announce) => {
     setEditAnnounceMode(true);
     setAnnounceData({
+      id: announce._id,
       title: announce.title,
       description: announce.description,
       price: announce.price,
       category: announce.category,
+      images: announce.images,
       location: announce.location
     });
   };
@@ -130,6 +134,7 @@ export default function ProfilePage() {
       setAnnounces(announces.map(announce => announce._id === announceData.id ? response.data : announce));
       setEditAnnounceMode(false);
       alert('Annonce mise à jour avec succès');
+      window.location.reload();
     } catch (err) {
       setError('Failed to update announce');
     }
@@ -184,7 +189,7 @@ export default function ProfilePage() {
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <div className="container mx-auto p-4"><div className="bg-white shadow-md rounded p-4"><h1 className="text-3xl font-bold text-center text-red-500">{error}</h1></div></div>;
   }
 
   return (
@@ -277,7 +282,7 @@ export default function ProfilePage() {
               </button>
               <button
                 onClick={handleDeleteAccount}
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 mx-5 rounded focus:outline-none focus:shadow-outline mt-4"
               >
                 Delete Account
               </button>
@@ -293,18 +298,20 @@ export default function ProfilePage() {
             <span className="absolute top-0 left-0 bg-blue-500 text-white font-bold py-1 px-2 rounded">
               id : {announce._id}
             </span>
-            <button
-              onClick={() => handleDelete(announce._id)}
-              className="absolute top-0 right-8 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-            >
-              Delete
-            </button>
-            <button
-              onClick={() => handleEditAnnounce(announce)}
-              className="absolute top-0 right-24 bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded"
-            >
-              Edit
-            </button>
+            <div className="absolute top-0 right-0 flex space-x-2">
+              <button
+                onClick={() => handleDelete(announce._id)}
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+              >
+                Delete
+              </button>
+              <button
+                onClick={() => handleEditAnnounce(announce)}
+                className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded"
+              >
+                Edit
+              </button>
+            </div>
             <CardAnnouce
               id={announce._id}
               title={announce.title}
@@ -316,7 +323,7 @@ export default function ProfilePage() {
               createdAt={new Date(announce.createdAt).toLocaleDateString()}
               user={user.username}
             />
-          </div>
+          </div>        
         ))}
       </div>
 
@@ -395,7 +402,6 @@ export default function ProfilePage() {
                 name="images"
                 value={announceData.images}
                 onChange={handleAnnounceChange}
-                required
               />
             </div>
             <div className="flex items-center justify-end">
