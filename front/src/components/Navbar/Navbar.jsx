@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { FaUser, FaSignInAlt, FaUserPlus, FaSignOutAlt, FaPlusCircle } from 'react-icons/fa';
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -24,41 +25,53 @@ export default function Navbar() {
             Le Coin Bon
           </NavLink>
         </div>
-        <div className="space-x-4">
+        <div className="space-x-4 flex items-center">
           {token ? (
             <>
               <NavLink
                 to="/profile"
                 className={({ isActive }) =>
-                  isActive ? "bg-gray-700 text-white rounded px-3 py-2" : "text-gray-300 hover:bg-gray-700 hover:text-white rounded px-3 py-2"
+                  isActive ? "bg-gray-700 text-white rounded px-3 py-2 flex items-center" : "text-gray-300 hover:bg-gray-700 hover:text-white rounded px-3 py-2 flex items-center"
                 }
               >
+                <FaUser className="mr-1" />
                 Profile
+              </NavLink>
+              <NavLink
+                to="/createAnnonce"
+                className={({ isActive }) =>
+                  isActive ? "bg-green-700 text-white rounded px-3 py-2 flex items-center" : "bg-green-500 text-white hover:bg-green-700 rounded px-3 py-2 flex items-center"
+                }
+              >
+                <FaPlusCircle className="mr-1" />
+                Create Announce
               </NavLink>
               <button
                 onClick={handleLogout}
-                className="bg-red-500 text-white rounded px-3 py-2"
+                className="bg-red-500 text-white rounded px-3 py-2 flex items-center"
               >
+                <FaSignOutAlt className="mr-1" />
                 Logout
               </button>
             </>
-
           ) : (
             <>
               <NavLink
                 to="/login"
                 className={({ isActive }) =>
-                  isActive ? "bg-gray-700 text-white rounded px-3 py-2" : "text-gray-300 hover:bg-gray-700 hover:text-white rounded px-3 py-2"
+                  isActive ? "bg-gray-700 text-white rounded px-3 py-2 flex items-center" : "text-gray-300 hover:bg-gray-700 hover:text-white rounded px-3 py-2 flex items-center"
                 }
               >
+                <FaSignInAlt className="mr-1" />
                 Login
               </NavLink>
               <NavLink
                 to="/register"
                 className={({ isActive }) =>
-                  isActive ? "bg-gray-700 text-white rounded px-3 py-2" : "text-gray-300 hover:bg-gray-700 hover:text-white rounded px-3 py-2"
+                  isActive ? "bg-gray-700 text-white rounded px-3 py-2 flex items-center" : "text-gray-300 hover:bg-gray-700 hover:text-white rounded px-3 py-2 flex items-center"
                 }
               >
+                <FaUserPlus className="mr-1" />
                 Register
               </NavLink>
             </>

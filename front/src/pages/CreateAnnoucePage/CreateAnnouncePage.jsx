@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import CardAnnouce from '../../components/Card/CardAnnouce';
 
 export default function CreateAnnouncePage() {
@@ -20,10 +21,21 @@ export default function CreateAnnouncePage() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Logique pour soumettre le formulaire
-    console.log(formData);
+    try {
+      const response = await axios.post('http://localhost:8080/create', formData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}` // Assuming you have a token stored in localStorage
+        }
+      });
+      console.log(response.data);
+      alert('Annonce créée avec succès');
+    } catch (error) {
+      console.error('Erreur lors de la création de l\'annonce', error);
+      alert('Erreur lors de la création de l\'annonce');
+    }
   };
 
   return (
@@ -129,7 +141,7 @@ export default function CreateAnnouncePage() {
             <div className="flex items-center justify-between">
               <button
                 type="submit"
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               >
                 Créer
               </button>
@@ -146,7 +158,7 @@ export default function CreateAnnouncePage() {
             location={formData.location}
             images={[formData.images]}
             createdAt={new Date().toLocaleDateString()}
-            user={formData.user}
+            user="Vous"
           />
         </div>
       </div>
