@@ -41,7 +41,8 @@ export default function LoginForm() {
             console.log("Server response:", response);
             if (response.status === 200) {
                 setAlert({ type: 'success', message: 'Login successful' });
-                navigate("/jokes");
+                localStorage.setItem('token', response.data.token); // Stocker le token dans le localStorage
+                // navigate("/");
             } else {
                 console.log("Unexpected response status:", response.status);
                 setAlert({ type: 'error', message: 'Login failed' });
@@ -61,7 +62,11 @@ export default function LoginForm() {
         <>
             <div className='flex flex-col items-center justify-center rounded-3xl p-5 bg-gray-900 shadow-md w-1/3'>
                 <h1 className='text-4xl font-bold text-white mb-5'>Login</h1>
-
+                {alert && (
+                    <div className={`p-2 mt-4 w-full text-sm ${alert.type === 'error' ? 'text-red-700 bg-red-100' : 'text-green-700 bg-green-100'} rounded-lg`} role="alert">
+                        {alert.message}
+                    </div>
+                )}
                 <Input label='Email' type='email' value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Enter your email' />
                 <Input label='Password' type='password' value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Enter your password' />
 
@@ -85,7 +90,6 @@ export default function LoginForm() {
                         {alert.message}
                     </div>
                 )}
-
             </div>
         </>
     );
