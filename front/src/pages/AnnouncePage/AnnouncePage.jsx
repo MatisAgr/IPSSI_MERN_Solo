@@ -5,6 +5,8 @@ import CardAnnouce from '../../components/Card/CardAnnouce';
 
 export default function AnnouncePage() {
   const [announces, setAnnounces] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchAnnounces = async () => {
@@ -18,6 +20,21 @@ export default function AnnouncePage() {
 
     fetchAnnounces();
   }, []);
+
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredAnnounces = announces.filter((announce) => {
+    return (
+      (selectedCategory ? announce.category === selectedCategory : true) &&
+      (searchTerm ? announce.title.toLowerCase().includes(searchTerm.toLowerCase()) : true)
+    );
+  });
 
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -34,6 +51,7 @@ export default function AnnouncePage() {
           </Carousel>
         </div>
 
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-white p-4 rounded shadow">
             <h2 className="text-xl font-bold mb-2">Noël</h2>
@@ -49,10 +67,54 @@ export default function AnnouncePage() {
           </div>
         </div>
 
-        {/* Emplacement pour mettre une grille d'article en card  */}
+        <hr className="my-8 border-gray-300 border-5 h-2 rounded-full bg-gray-300" />
+
+        <h2 className="text-2xl font-bold mb-4 mt-5">Annonces</h2>
+
+        <div className="mb-4 flex space-x-4 bg-gray-500 p-4 rounded-2xl shadow">
+          <div>
+            <label htmlFor="category" className="block text-sm font-medium text-gray-200">
+              Filtrer par catégorie
+            </label>
+            <select
+              id="category"
+              name="category"
+              value={selectedCategory}
+              onChange={handleCategoryChange}
+              className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            >
+              <option value="">Sélectionnez une catégorie</option>
+              <option value="Électronique">Électronique</option>
+              <option value="Vêtements">Vêtements</option>
+              <option value="Maison">Maison</option>
+              <option value="Jardin">Jardin</option>
+              <option value="Véhicules">Véhicules</option>
+              <option value="Loisirs">Loisirs</option>
+              <option value="Sport">Sport</option>
+              <option value="Livres">Livres</option>
+              <option value="Jeux">Jeux</option>
+              <option value="Autres">Autres</option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="search" className="block text-sm font-medium text-gray-200">
+              Rechercher par nom
+            </label>
+            <input
+              type="text"
+              id="search"
+              name="search"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+              placeholder="Rechercher..."
+            />
+          </div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-          {announces.map((announce) => (
+          {filteredAnnounces.map((announce) => (
             <CardAnnouce
               key={announce._id}
               id={announce._id}
