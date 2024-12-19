@@ -1,10 +1,16 @@
 const Announce = require('../Models/announceModel');
+const User = require('../Models/userModel');
 
 const createAnnounce = async (req, res) => {
   try {
-    const announce = new Announce(req.body);
+    const userId = req.user.id;
+    const announce = new Announce({
+      ...req.body,
+      user: userId
+    });
     await announce.save();
-    res.status(201).json({ message: 'Announce created successfully', announce });
+    const user = await User.findById(userId).select('username');
+    res.status(201).json({ message: 'Announce created successfully', announce, username: user.username });
   } catch (error) {
     res.status(400).json({ error: 'Error creating announce', details: error.message });
   }

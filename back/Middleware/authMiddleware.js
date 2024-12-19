@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
+const User = require("../Models/userModel");
 
-const authMiddleware = (req, res, next) => {
+const authMiddleware = async (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1]; // Récupérer le token du header
 
   if (!token) {
@@ -10,8 +11,11 @@ const authMiddleware = (req, res, next) => {
   try {
     // Vérifier et décoder le token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("decoded", decoded);
-    req.user = decoded; // Ajoute les infos utilisateur décodées à req.user
+    const user = await User.findById(decoded.id);
+    if (!user) {
+      throw new Error();
+    }
+    req.user = user; // Ajoute les infos utilisateur à req.user
     next();
   } catch (err) {
     res.status(401).send({ error: "Invalid token." });
