@@ -1,0 +1,39 @@
+services:
+
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    container_name: my-react-frontend-app
+    ports:
+      - '80:80'
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    container_name: my-node-backend-app
+    ports:
+      - '8080:8080'
+    environment:
+      - JWT_SECRET=BLABLABLA
+      - JWT_EXPIRES_IN=1d
+      - DB_DIALECT=mongodb
+      - DB_HOST=mongodb
+      - DB_PORT=27017
+      - DB_NAME=test_docker_kubernetes
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    container_name: my-mongo-db
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
