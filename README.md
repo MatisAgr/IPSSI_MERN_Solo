@@ -1,4 +1,5 @@
 # Projet MERN - Le Coin Bon
+[![wakatime](https://wakatime.com/badge/user/a16f794f-b91d-4818-8dfc-d768ce605ece/project/ae63bf7c-ff59-491f-a991-53241623c3f9.svg)](https://wakatime.com/badge/user/a16f794f-b91d-4818-8dfc-d768ce605ece/project/ae63bf7c-ff59-491f-a991-53241623c3f9)
 
 Ce projet est une application web de type MERN (MongoDB, Express, React, Node.js) permettant aux utilisateurs de créer, modifier, supprimer et consulter des annonces.
 
